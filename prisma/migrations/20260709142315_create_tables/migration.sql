@@ -12,7 +12,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'client',
     "profileImage" TEXT,
-    "availability" TEXT[],
+    "availability" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

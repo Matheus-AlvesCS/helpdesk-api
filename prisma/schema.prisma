@@ -8,15 +8,15 @@ datasource db {
 }
 
 enum Role {
-  ADMIN @map("admin")
-  TECHNICIAN @map("technician")
-  CLIENT @map("client")
+  admin @map("admin")
+  technician @map("technician")
+  client @map("client")
 }
 
 enum TicketStatus {
-  OPEN @map("open")
-  IN_PROGRESS @map("in_progress")
-  CLOSED @map("closed")
+  open @map("open")
+  in_progress @map("in_progress")
+  closed @map("closed")
 }
 
 model User {
@@ -24,9 +24,9 @@ model User {
   name String
   email String @unique
   password String
-  role Role @default(CLIENT)
+  role Role @default(client)
   profileImage String?
-  availability String[]
+  availability String[] @default([])
   clientTickets Ticket[] @relation("ClientTickets")
   technicianTickets Ticket[] @relation("TechnicianTickets")
   createdAt DateTime @default(now()) @map("created_at")
@@ -40,7 +40,7 @@ model Ticket {
   clientId String
   technician User @relation("TechnicianTickets", fields: [technicianId], references: [id])
   technicianId String
-  status TicketStatus @default(OPEN)
+  status TicketStatus @default(open)
   services TicketService[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
