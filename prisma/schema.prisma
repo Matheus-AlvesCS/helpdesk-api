@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN @map("admin")
+  TECHNICIAN @map("technician")
+  CLIENT @map("client")
+}
+
+enum TicketStatus {
+  OPEN @map("open")
+  IN_PROGRESS @map("in_progress")
+  CLOSED @map("closed")
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  role Role @default(CLIENT)
+  profileImage String?
+  availability String[]
+  clientTickets Ticket[] @relation("ClientTickets")
+  technicianTickets Ticket[] @relation("TechnicianTickets")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Ticket {
+  id String @id @default(uuid())
+  title String
+  client User @relation("ClientTickets", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+  technician User @relation("TechnicianTickets", fields: [technicianId], references: [id])
+  technicianId String
+  status TicketStatus @default(OPEN)
+  services TicketService[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Service {
+  id String @id @default(uuid())
+  name String
+  price Decimal @db.Decimal(10, 2)
+  active Boolean @default(true)
+  tickets TicketService[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model TicketService {
+  ticketId String
+  serviceId String
+  price Decimal @db.Decimal(10, 2)
+  ticket Ticket @relation(fields: [ticketId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+  @@id([ticketId, serviceId])
+}
