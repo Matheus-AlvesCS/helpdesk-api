@@ -12,9 +12,12 @@ export class UsersController {
       email: z.email().trim(),
       password: z.string().trim().min(6),
       role: z.enum(["admin", "technician", "client"]).default("client"),
+      availability: z.string().array().default([]),
     })
 
-    const { email, name, password, role } = bodySchema.parse(request.body)
+    const { email, name, password, role, availability } = bodySchema.parse(
+      request.body,
+    )
 
     const existingUser = await prisma.user.findFirst({
       where: {
@@ -34,6 +37,7 @@ export class UsersController {
         email,
         password: passwordHash,
         role,
+        availability,
       },
     })
 
