@@ -5,7 +5,7 @@ import { authConfig } from "../configs/auth-config"
 import { AppError } from "../utils/app-error"
 
 interface ITokenPayload {
-  subject: string
+  sub: string
   role: string
 }
 
@@ -25,10 +25,7 @@ export function ensureAuthenticated(
 
     const { secret } = authConfig.jwt
 
-    const { role, subject: user_id } = jwt.verify(
-      token,
-      secret,
-    ) as ITokenPayload
+    const { role, sub: user_id } = jwt.verify(token, secret) as ITokenPayload
 
     request.user = {
       user_id,
