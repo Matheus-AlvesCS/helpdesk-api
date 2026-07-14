@@ -2,7 +2,11 @@ import { Request, Response } from "express"
 
 import * as z from "zod"
 
+import { DiskStorage } from "../providers/disk-storage"
+
 import uploadConfig from "../configs/upload-config"
+
+const diskStorage = new DiskStorage()
 
 export class UploadsController {
   async create(request: Request, response: Response) {
@@ -26,12 +30,13 @@ export class UploadsController {
         .loose()
 
       const file = fileSchema.parse(request.file)
+      const filename = await diskStorage.saveFile(file.filename)
 
-      return response.json(file)
+      return response.json({ filename })
     } catch (error) {
       if (error instanceof z.ZodError) {
         if (request.file) {
-          console.log(request.file)
+          await diskStorage.deleteFile(request.file.filename, "tmp")
         }
       }
 
