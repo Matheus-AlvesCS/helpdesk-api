@@ -29,6 +29,19 @@ export class UsersController {
       throw new AppError("Já existe um usuário cadastrado com esse e-mail.")
     }
 
+    if (role === "technician") {
+      availability.push(
+        "08:00",
+        "09:00",
+        "10:00",
+        "11:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+      )
+    }
+
     const passwordHash = await hash(password, 8)
 
     const user = await prisma.user.create({
