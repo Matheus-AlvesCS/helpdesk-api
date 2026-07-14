@@ -10,5 +10,6 @@ const servicesController = new ServicesController()
 
 servicesRoutes.use(ensureAuthenticated, verifyAuthorization(["admin"]))
 servicesRoutes.post("/", servicesController.create)
+servicesRoutes.put("/:id", servicesController.update)
 
 export { servicesRoutes }

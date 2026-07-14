@@ -30,4 +30,37 @@ export class ServicesController {
 
     return response.status(201).json(service)
   }
+
+  async update(request: Request, response: Response) {
+    const bodySchema = z.object({
+      name: z.string().trim().min(5),
+      price: z.number().positive(),
+    })
+
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { name, price } = bodySchema.parse(request.body)
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingService = await prisma.service.findUnique({ where: { id } })
+
+    if (!existingService) {
+      throw new AppError("Esse serviço não existe")
+    }
+
+    await prisma.service.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        price,
+      },
+    })
+
+    return response.status(200).json()
+  }
 }
