@@ -95,4 +95,25 @@ export class UsersController {
       .status(200)
       .json({ message: "Usuário atualizado!", updatedUser })
   }
+
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      role: z.enum(["technician", "client"]).optional(),
+      name: z.string().trim().optional(),
+    })
+
+    const { name, role } = querySchema.parse(request.query)
+
+    const allUsers = await prisma.user.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+        role,
+      },
+    })
+
+    return response.status(200).json(allUsers)
+  }
 }

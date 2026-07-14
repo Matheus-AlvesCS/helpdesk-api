@@ -9,10 +9,12 @@ const usersRoutes = Router()
 const usersController = new UsersController()
 
 usersRoutes.post("/", usersController.create)
-usersRoutes.use(
-  ensureAuthenticated,
+usersRoutes.use(ensureAuthenticated)
+usersRoutes.put(
+  "/:id",
   verifyAuthorization(["admin", "technician", "client"]),
+  usersController.update,
 )
-usersRoutes.put("/:id", usersController.update)
+usersRoutes.get("/", verifyAuthorization(["admin"]), usersController.index)
 
 export { usersRoutes }
