@@ -91,9 +91,7 @@ export class UsersController {
       },
     })
 
-    return response
-      .status(200)
-      .json({ message: "Usuário atualizado!", updatedUser })
+    return response.status(200).json()
   }
 
   async index(request: Request, response: Response) {
@@ -115,5 +113,27 @@ export class UsersController {
     })
 
     return response.status(200).json(allUsers)
+  }
+
+  async delete(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingUser = await prisma.user.findFirst({ where: { id } })
+
+    if (!existingUser) {
+      throw new AppError("Usuário não encontrado", 404)
+    }
+
+    if (request.user.user_id !== id && request.user.role !== "admin") {
+      throw new AppError("Sem permissão")
+    }
+
+    await prisma.user.delete({ where: { id } })
+
+    return response.status(200).json()
   }
 }

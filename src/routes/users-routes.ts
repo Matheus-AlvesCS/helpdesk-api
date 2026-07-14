@@ -16,5 +16,10 @@ usersRoutes.put(
   usersController.update,
 )
 usersRoutes.get("/", verifyAuthorization(["admin"]), usersController.index)
+usersRoutes.delete(
+  "/:id",
+  verifyAuthorization(["admin", "client"]),
+  usersController.delete,
+)
 
 export { usersRoutes }
