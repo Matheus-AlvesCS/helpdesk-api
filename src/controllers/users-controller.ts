@@ -91,7 +91,7 @@ export class UsersController {
       throw new AppError("Sem permissão", 401)
     }
 
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id,
       },
