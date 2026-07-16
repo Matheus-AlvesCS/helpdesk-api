@@ -87,4 +87,70 @@ export class ServicesController {
 
     return response.status(200).json(allServices)
   }
+
+  async deactivate(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!existingService) {
+      throw new AppError("Serviço não encontrado", 404)
+    }
+
+    if (existingService.active === false) {
+      throw new AppError("Esse serviço já está desativado")
+    }
+
+    await prisma.service.update({
+      where: {
+        id,
+      },
+      data: {
+        active: false,
+      },
+    })
+
+    return response.status(200).json()
+  }
+
+  async activate(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!existingService) {
+      throw new AppError("Serviço não encontrado", 404)
+    }
+
+    if (existingService.active === true) {
+      throw new AppError("Esse serviço já está ativado")
+    }
+
+    await prisma.service.update({
+      where: {
+        id,
+      },
+      data: {
+        active: true,
+      },
+    })
+
+    return response.status(200).json()
+  }
 }

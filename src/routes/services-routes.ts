@@ -12,5 +12,7 @@ servicesRoutes.use(ensureAuthenticated, verifyAuthorization(["admin"]))
 servicesRoutes.post("/", servicesController.create)
 servicesRoutes.put("/:id", servicesController.update)
 servicesRoutes.get("/", servicesController.index)
+servicesRoutes.patch("/:id/deactivate", servicesController.deactivate)
+servicesRoutes.patch("/:id/activate", servicesController.activate)
 
 export { servicesRoutes }
