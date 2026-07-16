@@ -63,4 +63,28 @@ export class ServicesController {
 
     return response.status(200).json()
   }
+
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      name: z.string().trim().optional(),
+      active: z
+        .string()
+        .transform((value) => (value === "true" ? true : false))
+        .optional(),
+    })
+
+    const { name, active } = querySchema.parse(request.query)
+
+    const allServices = await prisma.service.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+        active,
+      },
+    })
+
+    return response.status(200).json(allServices)
+  }
 }
