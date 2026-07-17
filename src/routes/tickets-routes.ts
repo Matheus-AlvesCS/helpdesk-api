@@ -21,5 +21,6 @@ ticketsRoutes.post(
   verifyAuthorization(["technician"]),
   ticketsServicesController.create,
 )
+ticketsRoutes.get("/", verifyAuthorization(["admin"]), ticketsController.index)
 
 export { ticketsRoutes }

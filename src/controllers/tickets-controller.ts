@@ -64,4 +64,65 @@ export class TicketsController {
 
     return response.status(201).json(ticket)
   }
+
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      title: z.string().trim().optional(),
+      status: z.enum(["open", "in_progress", "closed"]).optional(),
+    })
+
+    const { status, title } = querySchema.parse(request.query)
+
+    const allTickets = await prisma.ticket.findMany({
+      where: {
+        title: {
+          contains: title,
+          mode: "insensitive",
+        },
+        status,
+      },
+      omit: {
+        clientId: true,
+        technicianId: true,
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            price: true,
+          },
+        },
+      },
+    })
+
+    const tickets = allTickets.map((ticket) => {
+      return {
+        ...ticket,
+        totalPrice: ticket.services
+          .reduce((acc, current) => Number(current.price) + acc, 0)
+          .toFixed(2),
+      }
+    })
+
+    return response.status(200).json(tickets)
+  }
 }
