@@ -27,5 +27,10 @@ ticketsRoutes.get(
   verifyAuthorization(["client", "technician"]),
   ticketsController.myTickets,
 )
+ticketsRoutes.patch(
+  "/:id/start",
+  verifyAuthorization(["admin", "technician"]),
+  ticketsController.startTicket,
+)
 
 export { ticketsRoutes }
