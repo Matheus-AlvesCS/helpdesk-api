@@ -2,7 +2,10 @@ import { Request, Response } from "express"
 import * as z from "zod"
 
 import { prisma } from "../database/prisma"
+
 import { AppError } from "../utils/app-error"
+import { patternFilters } from "../utils/ticket-index-filter"
+import { formatTicket } from "../utils/ticket-total-price"
 export class TicketsController {
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
@@ -73,48 +76,44 @@ export class TicketsController {
 
     const { status, title } = querySchema.parse(request.query)
 
-    const allTickets = await prisma.ticket.findMany({
+    const filters = {
       where: {
         title: {
           contains: title,
-          mode: "insensitive",
         },
         status,
       },
-      omit: {
-        clientId: true,
-        technicianId: true,
-      },
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-        technician: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-        services: {
-          select: {
-            service: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            price: true,
-          },
-        },
-      },
-    })
+      ...patternFilters,
+    }
 
-    const tickets = allTickets.map((ticket) => {
+    const allTickets = await prisma.ticket.findMany(filters)
+
+    const tickets = allTickets.map(formatTicket)
+
+    return response.status(200).json(tickets)
+  }
+
+  async myTickets(request: Request, response: Response) {
+    const filters = {
+      where: {},
+      ...patternFilters,
+    }
+
+    if (request.user.role === "client") {
+      filters.where = {
+        clientId: request.user.user_id,
+      }
+    }
+
+    if (request.user.role === "technician") {
+      filters.where = {
+        technicianId: request.user.user_id,
+      }
+    }
+
+    const myTickets = await prisma.ticket.findMany(filters)
+
+    const tickets = myTickets.map((ticket) => {
       return {
         ...ticket,
         totalPrice: ticket.services
