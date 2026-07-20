@@ -108,20 +108,26 @@ export class UsersController {
 
     const { id } = paramsSchema.parse(request.params)
 
-    const existingUser = await prisma.user.findFirst({
+    const existingUser = await prisma.user.findUnique({
       where: {
         id,
       },
     })
 
-    const existingEmail = await prisma.user.findUnique({ where: { email } })
+    if (email) {
+      const existingEmail = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      })
+
+      if (existingEmail && existingEmail.id !== id) {
+        throw new AppError("Esse e-mail já está em uso")
+      }
+    }
 
     if (!existingUser) {
       throw new AppError("Usuário não encontrado", 404)
-    }
-
-    if (existingEmail) {
-      throw new AppError("Esse e-mail já está em uso")
     }
 
     const newPassword = password && (await hash(password, 8))

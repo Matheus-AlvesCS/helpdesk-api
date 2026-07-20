@@ -81,7 +81,7 @@ export class ServicesController {
           contains: name,
           mode: "insensitive",
         },
-        active,
+        active: request.user.role !== "admin" ? true : active,
       },
     })
 

@@ -8,11 +8,31 @@ import { verifyAuthorization } from "../middlewares/verify-authorization"
 const servicesRoutes = Router()
 const servicesController = new ServicesController()
 
-servicesRoutes.use(ensureAuthenticated, verifyAuthorization(["admin"]))
-servicesRoutes.post("/", servicesController.create)
-servicesRoutes.put("/:id", servicesController.update)
-servicesRoutes.get("/", servicesController.index)
-servicesRoutes.patch("/:id/deactivate", servicesController.deactivate)
-servicesRoutes.patch("/:id/activate", servicesController.activate)
+servicesRoutes.use(ensureAuthenticated)
+servicesRoutes.post(
+  "/",
+  verifyAuthorization(["admin"]),
+  servicesController.create,
+)
+servicesRoutes.put(
+  "/:id",
+  verifyAuthorization(["admin"]),
+  servicesController.update,
+)
+servicesRoutes.get(
+  "/",
+  verifyAuthorization(["admin", "technician", "client"]),
+  servicesController.index,
+)
+servicesRoutes.patch(
+  "/:id/deactivate",
+  verifyAuthorization(["admin"]),
+  servicesController.deactivate,
+)
+servicesRoutes.patch(
+  "/:id/activate",
+  verifyAuthorization(["admin"]),
+  servicesController.activate,
+)
 
 export { servicesRoutes }

@@ -30,6 +30,24 @@ export class TicketsServicesController {
       },
     })
 
+    if (existingServices) {
+      const existingTicketService = await prisma.ticketService.findMany({
+        where: {
+          ticketId: id,
+        },
+      })
+
+      existingServices.forEach((service) => {
+        existingTicketService.forEach((ticketService) => {
+          if (service.id === ticketService?.serviceId) {
+            throw new AppError(
+              `Esse serviço (${service.name}) já está atribuído a esse ticket`,
+            )
+          }
+        })
+      })
+    }
+
     if (existingServices.length < serviceIds.length) {
       throw new AppError("Um dos serviços escolhidos é inválido")
     }
