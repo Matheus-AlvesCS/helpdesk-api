@@ -6,24 +6,56 @@ import { AppError } from "../utils/app-error"
 import { prisma } from "../database/prisma"
 
 export class UsersController {
-  async create(request: Request, response: Response) {
+  async createClient(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string().trim().min(3),
       email: z.email().trim(),
       password: z.string().trim().min(6),
-      role: z.enum(["admin", "technician", "client"]).default("client"),
-      availability: z.string().array().default([]),
     })
 
-    const { email, name, password, role, availability } = bodySchema.parse(
-      request.body,
-    )
+    const { email, name, password } = bodySchema.parse(request.body)
 
-    const existingUser = await prisma.user.findFirst({
+    const existingUser = await prisma.user.findUnique({
       where: {
         email,
       },
     })
+
+    if (existingUser) {
+      throw new AppError("Já existe um usuário cadastrado com esse e-mail.")
+    }
+
+    const passwordHash = await hash(password, 8)
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: passwordHash,
+      },
+    })
+
+    return response.status(201).json(user)
+  }
+
+  async createUser(request: Request, response: Response) {
+    const bodySchema = z.object({
+      name: z.string().trim().min(3),
+      email: z.email().trim(),
+      password: z.string().trim().min(6),
+      role: z.enum(["client", "technician", "admin"]),
+      availability: z.string().array().default([]),
+    })
+
+    const { name, email, password, role, availability } = bodySchema.parse(
+      request.body,
+    )
+
+    const existingUser = await prisma.user.findUnique({ where: { email } })
+
+    if (request.user.role !== "admin") {
+      throw new AppError("Sem permissão")
+    }
 
     if (existingUser) {
       throw new AppError("Já existe um usuário cadastrado com esse e-mail.")
@@ -39,6 +71,7 @@ export class UsersController {
         "15:00",
         "16:00",
         "17:00",
+        "18:00",
       )
     }
 
@@ -81,8 +114,14 @@ export class UsersController {
       },
     })
 
+    const existingEmail = await prisma.user.findUnique({ where: { email } })
+
     if (!existingUser) {
       throw new AppError("Usuário não encontrado", 404)
+    }
+
+    if (existingEmail) {
+      throw new AppError("Esse e-mail já está em uso")
     }
 
     const newPassword = password && (await hash(password, 8))

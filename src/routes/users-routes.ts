@@ -8,8 +8,13 @@ import { verifyAuthorization } from "../middlewares/verify-authorization"
 const usersRoutes = Router()
 const usersController = new UsersController()
 
-usersRoutes.post("/", usersController.create)
+usersRoutes.post("/", usersController.createClient)
 usersRoutes.use(ensureAuthenticated)
+usersRoutes.post(
+  "/create",
+  verifyAuthorization(["admin"]),
+  usersController.createUser,
+)
 usersRoutes.put(
   "/:id",
   verifyAuthorization(["admin", "technician", "client"]),
