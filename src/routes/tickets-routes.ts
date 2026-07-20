@@ -32,5 +32,10 @@ ticketsRoutes.patch(
   verifyAuthorization(["admin", "technician"]),
   ticketsController.startTicket,
 )
+ticketsRoutes.patch(
+  "/:id/close",
+  verifyAuthorization(["admin", "technician"]),
+  ticketsController.closeTicket,
+)
 
 export { ticketsRoutes }
