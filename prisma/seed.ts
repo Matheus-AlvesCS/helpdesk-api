@@ -9,6 +9,70 @@ const adapter = new PrismaPg(pool)
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
+  await prisma.user.createMany({
+    data: [
+      {
+        name: "Administrador",
+        email: "admin@email.com",
+        password: "admin",
+        role: "admin",
+      },
+      {
+        name: "João Carlos",
+        email: "joao@email.com",
+        password: "123456",
+        availability: [
+          "07:00",
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00",
+        ],
+        role: "technician",
+      },
+      {
+        name: "Luiz Pereira",
+        email: "luiz@email.com",
+        password: "123456",
+        availability: [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "15:00",
+          "16:00",
+          "17:00",
+          "18:00",
+          "19:00",
+        ],
+        role: "technician",
+      },
+      {
+        name: "Amanda Soares",
+        email: "amanda@email.com",
+        password: "123456",
+        availability: [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00",
+          "17:00",
+          "18:00",
+        ],
+        role: "technician",
+      },
+    ],
+  })
+
   await prisma.service.createMany({
     data: [
       {
