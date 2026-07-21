@@ -33,8 +33,8 @@ export class ServicesController {
 
   async update(request: Request, response: Response) {
     const bodySchema = z.object({
-      name: z.string().trim().min(5),
-      price: z.number().positive(),
+      name: z.string().trim().min(5).optional(),
+      price: z.number().positive().optional(),
     })
 
     const paramsSchema = z.object({
@@ -51,7 +51,7 @@ export class ServicesController {
       throw new AppError("Esse serviço não existe")
     }
 
-    await prisma.service.update({
+    const updatedService = await prisma.service.update({
       where: {
         id,
       },
@@ -61,7 +61,7 @@ export class ServicesController {
       },
     })
 
-    return response.status(200).json()
+    return response.status(200).json(updatedService)
   }
 
   async index(request: Request, response: Response) {

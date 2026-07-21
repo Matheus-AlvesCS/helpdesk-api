@@ -56,6 +56,12 @@ export class TicketsServicesController {
       throw new AppError("Esse ticket não existe", 404)
     }
 
+    if (existingTicket.status === "closed") {
+      throw new AppError(
+        "O ticket já foi resolvido, não é possível adicionar mais serviços",
+      )
+    }
+
     if (existingTicket.technicianId !== request.user.user_id) {
       throw new AppError("Sem permissão", 401)
     }
