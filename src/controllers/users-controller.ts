@@ -130,13 +130,19 @@ export class UsersController {
       throw new AppError("Usuário não encontrado", 404)
     }
 
+    if (existingUser.role === "client") {
+      if (availability) {
+        throw new AppError("Campo inválido para clientes preenchido")
+      }
+    }
+
     const newPassword = password && (await hash(password, 8))
 
     if (request.user.user_id !== id && request.user.role !== "admin") {
       throw new AppError("Sem permissão", 401)
     }
 
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id,
       },
@@ -149,7 +155,7 @@ export class UsersController {
       },
     })
 
-    return response.status(200).json()
+    return response.status(200).json(updatedUser)
   }
 
   async index(request: Request, response: Response) {
@@ -166,7 +172,7 @@ export class UsersController {
           contains: name,
           mode: "insensitive",
         },
-        role,
+        role: request.user.role === "client" ? "technician" : role,
       },
     })
 

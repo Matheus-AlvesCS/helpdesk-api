@@ -20,7 +20,11 @@ usersRoutes.put(
   verifyAuthorization(["admin", "technician", "client"]),
   usersController.update,
 )
-usersRoutes.get("/", verifyAuthorization(["admin"]), usersController.index)
+usersRoutes.get(
+  "/",
+  verifyAuthorization(["admin", "client"]),
+  usersController.index,
+)
 usersRoutes.delete(
   "/:id",
   verifyAuthorization(["admin", "client"]),
