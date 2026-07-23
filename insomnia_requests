@@ -1,0 +1,652 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: HelpDeskAPI
+meta:
+  id: wrk_c39e0413d2e74b9f99cee83fbe3bd4b7
+  created: 1783427734536
+  modified: 1783427734536
+  description: ""
+collection:
+  - name: Users
+    meta:
+      id: fld_0f27a4a042d444d98fafa9f9cf83722d
+      created: 1783427742356
+      modified: 1783427829198
+      sortKey: -1783427742356
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create Client
+        meta:
+          id: req_408ffd9ac507400daa6183c8d7a6614a
+          created: 1783427780223
+          modified: 1784810514107
+          isPrivate: false
+          description: ""
+          sortKey: -1783427780223
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Guilherme Alves",
+            	"email": "gui@email.com",
+            	"password": "123456"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/a28dc2a6-3f4b-4706-a6b5-e83e7fe997f1"
+        name: Update
+        meta:
+          id: req_9ae72bf2bba64fe494a4c405bb8a1761
+          created: 1783945589170
+          modified: 1784810661802
+          isPrivate: false
+          description: ""
+          sortKey: -1783945589170
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"profileImage": "7d08e0309edb2fce1f4a-perfil.jpg" 
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_216adbef5447411fb8a493b48ce1660d
+          created: 1784035151505
+          modified: 1784557993007
+          isPrivate: false
+          description: ""
+          sortKey: -1784035151505
+        method: GET
+        parameters:
+          - name: role
+            value: technician
+            description: ""
+            disabled: true
+          - name: name
+            value: Div
+            description: ""
+            disabled: true
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/44d34f07-3ec3-406f-a188-47b3c3015d31"
+        name: Delete
+        meta:
+          id: req_a1648363e9f74b8baa7f0051edc36564
+          created: 1784036359975
+          modified: 1784807578514
+          isPrivate: false
+          description: ""
+          sortKey: -1784036359975
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/create"
+        name: Create User
+        meta:
+          id: req_ddbb2b031db540058c6e35ba52838a3b
+          created: 1784550683171
+          modified: 1784807556514
+          isPrivate: false
+          description: ""
+          sortKey: -1780836850965
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Zeze",
+            	"email": "ze@email.com",
+            	"password": "123456",
+            	"role": "admin"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: users
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Sessions
+    meta:
+      id: fld_ce80796bc9e942d9844735553d79389a
+      created: 1783693676580
+      modified: 1783693696469
+      sortKey: -1783693676580
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Login
+        meta:
+          id: req_649fd0171dc14283bddf2ed0738bb8ea
+          created: 1783693668891
+          modified: 1784810911898
+          isPrivate: false
+          description: ""
+          sortKey: -1783693681218
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "gui@email.com",
+            	"password": "gui123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: sessions
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Uploads
+    meta:
+      id: fld_6c8897edcddc4a29a31c6eb9b09cfd3f
+      created: 1784031806819
+      modified: 1784031832259
+      sortKey: -1784031806819
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_7fa33d3d81cb4a89a28f3cafa344c9e7
+          created: 1784031809628
+          modified: 1784810614653
+          isPrivate: false
+          description: ""
+          sortKey: -1784031809628
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: avatar
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\Matheus Alves\Pictures\perfil.jpg
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/7d08e0309edb2fce1f4a-perfil.jpg"
+        name: View
+        meta:
+          id: req_c33f135e313a4a07931e299f0bbb8ea5
+          created: 1784034697120
+          modified: 1784810641921
+          isPrivate: false
+          description: ""
+          sortKey: -1784034697120
+        method: GET
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: uploads
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Services
+    meta:
+      id: fld_a3070efa69a14faf89e9cf9f4a87af17
+      created: 1784038029031
+      modified: 1784038050222
+      sortKey: -1784038029031
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_9a874bd5f94840cd9f356915a598368b
+          created: 1784038031684
+          modified: 1784634063902
+          isPrivate: false
+          description: ""
+          sortKey: -1784038031684
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Limpeza e troca de pasta térmica",
+            	"price": 25,
+            	"active": false
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/ac4cb354-0bcd-4b72-8d1a-a736bccc0001"
+        name: Update
+        meta:
+          id: req_c2689730595d41d69e1973b401f46cae
+          created: 1784038892237
+          modified: 1784634112036
+          isPrivate: false
+          description: ""
+          sortKey: -1784037195829.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"price": 27.45
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_680f745ce4c94843a9249eba160b693c
+          created: 1784204458558
+          modified: 1784205004014
+          isPrivate: false
+          description: ""
+          sortKey: -1784204458558
+        method: GET
+        parameters:
+          - name: name
+            value: ""
+            description: ""
+            disabled: true
+          - name: active
+            value: "true"
+            description: ""
+            disabled: true
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE
+          }}/ac4cb354-0bcd-4b72-8d1a-a736bccc0001/deactivate"
+        name: Deactivate
+        meta:
+          id: req_08962a7fd8f84ea89b25d6ea272a2ab2
+          created: 1784205402199
+          modified: 1784634079434
+          isPrivate: false
+          description: ""
+          sortKey: -1784205402199
+        method: PATCH
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE
+          }}/ac4cb354-0bcd-4b72-8d1a-a736bccc0001/activate"
+        name: Activate
+        meta:
+          id: req_bafcebb7962b4454b512050ec3befcd0
+          created: 1784205633658
+          modified: 1784634086461
+          isPrivate: false
+          description: ""
+          sortKey: -1784204930378.5
+        method: PATCH
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: services
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Tickets
+    meta:
+      id: fld_58ee5be98b89412b97b62dfad5143117
+      created: 1784207271841
+      modified: 1784207283291
+      sortKey: -1784207271841
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_002ccec634824ecf85469530a0599ca7
+          created: 1784207284110
+          modified: 1784810714231
+          isPrivate: false
+          description: ""
+          sortKey: -1784207284110
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"title": "Atualização de Software",
+            	"technicianId": "d1dae3dc-ac11-4b65-aefa-845c9362dd29",
+            	"serviceId": "0004d8ad-6860-4b09-9493-c5638df978e4"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE
+          }}/b80f5374-3459-4d99-a3c6-18163b05493b/service"
+        name: Add Service
+        meta:
+          id: req_dc7f915a3ccc406488a96733b85a7938
+          created: 1784294127276
+          modified: 1784810791336
+          isPrivate: false
+          description: ""
+          sortKey: -1784294127276
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"serviceIds": ["41cc94b1-6cb2-4361-ae79-b7fe99e70696"]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_20c0c514ca354143931ab51471e45cf3
+          created: 1784296944591
+          modified: 1784548641230
+          isPrivate: false
+          description: ""
+          sortKey: -1784296944591
+        method: GET
+        parameters:
+          - name: title
+            value: ""
+            description: ""
+            disabled: true
+          - name: status
+            value: open
+            description: ""
+            disabled: true
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/my-tickets"
+        name: My Tickets
+        meta:
+          id: req_2a634b60e5344f61a4ea687262fe207c
+          created: 1784299711270
+          modified: 1784548314736
+          isPrivate: false
+          description: ""
+          sortKey: -1784295535933.5
+        method: GET
+        parameters:
+          - name: title
+            value: ""
+            description: ""
+            disabled: true
+          - name: status
+            value: open
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE
+          }}/b80f5374-3459-4d99-a3c6-18163b05493b/start"
+        name: Start Ticket
+        meta:
+          id: req_fafeae1f376b4afaa39668ef97965755
+          created: 1784548304414
+          modified: 1784810841704
+          isPrivate: false
+          description: ""
+          sortKey: -1784206343154.5
+        method: PATCH
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE
+          }}/b80f5374-3459-4d99-a3c6-18163b05493b/close"
+        name: Close Ticket
+        meta:
+          id: req_a8ec6b0b97ac4bc8a9b45e17ec96573b
+          created: 1784548927362
+          modified: 1784810854073
+          isPrivate: false
+          description: ""
+          sortKey: -1784205872676.75
+        method: PATCH
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_649fd0171dc14283bddf2ed0738bb8ea',
+            'b64::JC50b2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: tickets
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_8fc203d1ee68c48e7a4773c8b2aa2d9d8aa0a48a
+    created: 1783427734545
+    modified: 1783427734545
+environments:
+  name: Base Environment
+  meta:
+    id: env_8fc203d1ee68c48e7a4773c8b2aa2d9d8aa0a48a
+    created: 1783427734539
+    modified: 1783427767545
+    isPrivate: false
+  data:
+    BASE_URL: http://localhost:3333
+  subEnvironments:
+    - name: Production
+      meta:
+        id: env_54671355d674435f8314e849155d8b8a
+        created: 1784810392855
+        modified: 1784810434125
+        isPrivate: false
+        sortKey: 1784810392855
+      data:
+        BASE_URL: https://helpdesk-api-wini.onrender.com

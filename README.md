@@ -2,6 +2,8 @@
 
 Backend da aplicação de suporte e gestão de chamados, construída com Node.js, TypeScript, Express, Prisma e PostgreSQL.
 
+Deploy: https://helpdesk-api-wini.onrender.com
+
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
