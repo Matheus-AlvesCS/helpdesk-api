@@ -3,6 +3,8 @@ import { Pool } from "pg"
 import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "../src/generated/prisma/client"
 
+import { hash } from "bcrypt"
+
 const connectionString = `${process.env.DATABASE_URL}`
 const pool = new Pool({ connectionString })
 const adapter = new PrismaPg(pool)
@@ -14,13 +16,13 @@ async function main() {
       {
         name: "Administrador",
         email: "admin@email.com",
-        password: "admin",
+        password: await hash("admin123", 8),
         role: "admin",
       },
       {
         name: "João Carlos",
         email: "joao@email.com",
-        password: "123456",
+        password: await hash("123456", 8),
         availability: [
           "07:00",
           "08:00",
@@ -37,7 +39,7 @@ async function main() {
       {
         name: "Luiz Pereira",
         email: "luiz@email.com",
-        password: "123456",
+        password: await hash("123456", 8),
         availability: [
           "08:00",
           "09:00",
@@ -55,7 +57,7 @@ async function main() {
       {
         name: "Amanda Soares",
         email: "amanda@email.com",
-        password: "123456",
+        password: await hash("123456", 8),
         availability: [
           "08:00",
           "09:00",
