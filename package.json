@@ -2,8 +2,13 @@
   "name": "api",
   "version": "1.0.0",
   "description": "API de um sistema de gerenciamento de chamados",
-  "main": "src/server.ts",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=24.x"
+  },
   "scripts": {
+    "build": "tsup src/server.ts --format esm --clean",
+    "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "test": "vitest"
   },
@@ -18,11 +23,12 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.2.0",
-    "@types/node": "^26.1.0",
+    "@types/node": "^24.13.0",
     "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.1",
     "prisma": "^7.8.0",
     "supertest": "^7.2.2",
+    "tsup": "^8.5.1",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
