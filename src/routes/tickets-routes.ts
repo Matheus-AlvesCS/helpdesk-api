@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import { TicketsController } from "../controllers/tickets-controller"
 import { TicketsServicesController } from "../controllers/tickets-services-controller"
+import { TicketsStatusController } from "../controllers/tickets-status-controller"
 
 import { ensureAuthenticated } from "../middlewares/ensure-authenticated"
 import { verifyAuthorization } from "../middlewares/verify-authorization"
@@ -9,6 +10,7 @@ import { verifyAuthorization } from "../middlewares/verify-authorization"
 const ticketsRoutes = Router()
 const ticketsController = new TicketsController()
 const ticketsServicesController = new TicketsServicesController()
+const ticketsStatusController = new TicketsStatusController()
 
 ticketsRoutes.use(ensureAuthenticated)
 ticketsRoutes.post(
@@ -30,12 +32,12 @@ ticketsRoutes.get(
 ticketsRoutes.patch(
   "/:id/start",
   verifyAuthorization(["admin", "technician"]),
-  ticketsController.startTicket,
+  ticketsStatusController.startTicket,
 )
 ticketsRoutes.patch(
   "/:id/close",
   verifyAuthorization(["admin", "technician"]),
-  ticketsController.closeTicket,
+  ticketsStatusController.closeTicket,
 )
 
 export { ticketsRoutes }
