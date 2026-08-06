@@ -25,6 +25,11 @@ ticketsRoutes.post(
 )
 ticketsRoutes.get("/", verifyAuthorization(["admin"]), ticketsController.index)
 ticketsRoutes.get(
+  "/:id",
+  verifyAuthorization(["admin", "technician", "client"]),
+  ticketsController.show,
+)
+ticketsRoutes.get(
   "/my-tickets",
   verifyAuthorization(["client", "technician"]),
   ticketsController.myTickets,

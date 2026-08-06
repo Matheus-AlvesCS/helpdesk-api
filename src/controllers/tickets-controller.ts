@@ -94,6 +94,35 @@ export class TicketsController {
     return response.status(200).json(tickets)
   }
 
+  async show(request: Request, response: Response) {
+    const paramsId = z.object({
+      id: z.uuid(),
+    })
+
+    const { id } = paramsId.parse(request.params)
+
+    const filters = {
+      where: {
+        id,
+      },
+      ...patternFilters,
+    }
+
+    const existingTicket = await prisma.ticket.findUnique(filters)
+
+    if (!existingTicket) {
+      throw new AppError("Esse chamado não existe")
+    }
+
+    const totalPrice = existingTicket.services
+      .reduce((acc, current) => Number(current.price) + acc, 0)
+      .toFixed(2)
+
+    const ticket = { ...existingTicket, totalPrice }
+
+    return response.status(200).json(ticket)
+  }
+
   async myTickets(request: Request, response: Response) {
     const filters = {
       where: {},

@@ -9,6 +9,7 @@ export let patternFilters = {
         id: true,
         name: true,
         email: true,
+        profileImage: true,
       },
     },
     technician: {
@@ -16,6 +17,7 @@ export let patternFilters = {
         id: true,
         name: true,
         email: true,
+        profileImage: true,
       },
     },
     services: {
