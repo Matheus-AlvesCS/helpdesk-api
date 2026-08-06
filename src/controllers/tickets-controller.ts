@@ -10,14 +10,14 @@ export class TicketsController {
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       title: z.string().trim().min(5),
+      description: z.string().trim(),
       status: z.enum(["open", "in_progress", "closed"]).default("open"),
       technicianId: z.uuid(),
       serviceId: z.uuid(),
     })
 
-    const { title, status, technicianId, serviceId } = bodySchema.parse(
-      request.body,
-    )
+    const { title, description, status, technicianId, serviceId } =
+      bodySchema.parse(request.body)
 
     const existingTechnician = await prisma.user.findFirst({
       where: {
@@ -48,6 +48,7 @@ export class TicketsController {
       const ticket = await tx.ticket.create({
         data: {
           title,
+          description,
           status,
           clientId: request.user.user_id,
           technicianId,
