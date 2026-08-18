@@ -18,21 +18,21 @@ ticketsRoutes.post(
   verifyAuthorization(["client"]),
   ticketsController.create,
 )
-ticketsRoutes.post(
-  "/:id/service",
-  verifyAuthorization(["technician"]),
-  ticketsServicesController.create,
-)
 ticketsRoutes.get("/", verifyAuthorization(["admin"]), ticketsController.index)
+ticketsRoutes.get(
+  "/my-tickets",
+  verifyAuthorization(["client", "technician"]),
+  ticketsController.myTickets,
+)
 ticketsRoutes.get(
   "/:id",
   verifyAuthorization(["admin", "technician", "client"]),
   ticketsController.show,
 )
-ticketsRoutes.get(
-  "/my-tickets",
-  verifyAuthorization(["client", "technician"]),
-  ticketsController.myTickets,
+ticketsRoutes.post(
+  "/:id/service",
+  verifyAuthorization(["technician"]),
+  ticketsServicesController.create,
 )
 ticketsRoutes.patch(
   "/:id/start",

@@ -114,6 +114,13 @@ export class TicketsController {
       throw new AppError("Esse chamado não existe")
     }
 
+    if (
+      existingTicket.technicianId !== request.user.user_id &&
+      request.user.role !== "admin"
+    ) {
+      throw new AppError("Sem permissão")
+    }
+
     const totalPrice = existingTicket.services
       .reduce((acc, current) => Number(current.price) + acc, 0)
       .toFixed(2)
@@ -143,14 +150,7 @@ export class TicketsController {
 
     const myTickets = await prisma.ticket.findMany(filters)
 
-    const tickets = myTickets.map((ticket) => {
-      return {
-        ...ticket,
-        totalPrice: ticket.services
-          .reduce((acc, current) => Number(current.price) + acc, 0)
-          .toFixed(2),
-      }
-    })
+    const tickets = myTickets.map(formatTicket)
 
     return response.status(200).json(tickets)
   }
