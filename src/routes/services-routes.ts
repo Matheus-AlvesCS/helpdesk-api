@@ -14,15 +14,15 @@ servicesRoutes.post(
   verifyAuthorization(["admin"]),
   servicesController.create,
 )
-servicesRoutes.put(
-  "/:id",
-  verifyAuthorization(["admin"]),
-  servicesController.update,
-)
 servicesRoutes.get(
   "/",
   verifyAuthorization(["admin", "technician", "client"]),
   servicesController.index,
+)
+servicesRoutes.put(
+  "/:id",
+  verifyAuthorization(["admin"]),
+  servicesController.update,
 )
 servicesRoutes.patch(
   "/:id/deactivate",

@@ -61,7 +61,7 @@ export class UsersController {
       throw new AppError("Já existe um usuário cadastrado com esse e-mail.")
     }
 
-    if (role === "technician") {
+    if (role === "technician" && availability.length < 1) {
       availability.push(
         "08:00",
         "09:00",
@@ -177,6 +177,22 @@ export class UsersController {
     })
 
     return response.status(200).json(allUsers)
+  }
+
+  async show(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingUser = await prisma.user.findUnique({ where: { id } })
+
+    if (!existingUser) {
+      throw new AppError("Usuário não encontrado", 404)
+    }
+
+    return response.status(200).json(existingUser)
   }
 
   async delete(request: Request, response: Response) {

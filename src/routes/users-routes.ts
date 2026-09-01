@@ -10,6 +10,12 @@ const usersController = new UsersController()
 
 usersRoutes.post("/", usersController.createClient)
 usersRoutes.use(ensureAuthenticated)
+usersRoutes.get(
+  "/",
+  verifyAuthorization(["admin", "client"]),
+  usersController.index,
+)
+usersRoutes.get("/:id", verifyAuthorization(["admin"]), usersController.show)
 usersRoutes.post(
   "/create",
   verifyAuthorization(["admin"]),
@@ -19,11 +25,6 @@ usersRoutes.put(
   "/:id",
   verifyAuthorization(["admin", "technician", "client"]),
   usersController.update,
-)
-usersRoutes.get(
-  "/",
-  verifyAuthorization(["admin", "client"]),
-  usersController.index,
 )
 usersRoutes.delete(
   "/:id",
