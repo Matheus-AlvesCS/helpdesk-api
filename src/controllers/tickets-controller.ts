@@ -106,6 +106,10 @@ export class TicketsController {
         id,
       },
       ...patternFilters,
+      omit: {
+        technicianId: false,
+        clientId: false,
+      },
     }
 
     const existingTicket = await prisma.ticket.findUnique(filters)
@@ -114,11 +118,14 @@ export class TicketsController {
       throw new AppError("Esse chamado não existe")
     }
 
-    if (
-      existingTicket.technicianId !== request.user.user_id &&
-      request.user.role !== "admin"
-    ) {
-      throw new AppError("Sem permissão")
+    if (request.user.role === "technician") {
+      if (existingTicket.technicianId !== request.user.user_id) {
+        throw new AppError("Sem permissão")
+      }
+    } else if (request.user.role === "client") {
+      if (existingTicket.clientId !== request.user.user_id) {
+        throw new AppError("Sem permissão")
+      }
     }
 
     const totalPrice = existingTicket.services

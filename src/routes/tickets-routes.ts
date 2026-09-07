@@ -30,9 +30,14 @@ ticketsRoutes.get(
   ticketsController.show,
 )
 ticketsRoutes.post(
-  "/:id/service",
+  "/:id/service/add",
   verifyAuthorization(["technician"]),
   ticketsServicesController.create,
+)
+ticketsRoutes.delete(
+  "/:id/service/remove",
+  verifyAuthorization(["technician"]),
+  ticketsServicesController.delete,
 )
 ticketsRoutes.patch(
   "/:id/start",
