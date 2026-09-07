@@ -26,6 +26,11 @@ usersRoutes.put(
   verifyAuthorization(["admin", "technician", "client"]),
   usersController.update,
 )
+usersRoutes.patch(
+  "/:id/password",
+  verifyAuthorization(["admin", "technician", "client"]),
+  usersController.updatePassword,
+)
 usersRoutes.delete(
   "/:id",
   verifyAuthorization(["admin", "client"]),

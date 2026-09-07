@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import * as z from "zod"
-import { hash } from "bcrypt"
+import { hash, compare } from "bcrypt"
 
 import { AppError } from "../utils/app-error"
 import { prisma } from "../database/prisma"
@@ -94,7 +94,6 @@ export class UsersController {
     const bodySchema = z.object({
       name: z.string().trim().min(3).optional(),
       email: z.email().trim().optional(),
-      password: z.string().trim().min(6).optional(),
       availability: z.string().array().optional(),
       profileImage: z.string().trim().min(15).optional(),
     })
@@ -103,8 +102,9 @@ export class UsersController {
       id: z.uuid(),
     })
 
-    const { name, email, password, availability, profileImage } =
-      bodySchema.parse(request.body)
+    const { name, email, availability, profileImage } = bodySchema.parse(
+      request.body,
+    )
 
     const { id } = paramsSchema.parse(request.params)
 
@@ -136,8 +136,6 @@ export class UsersController {
       }
     }
 
-    const newPassword = password && (await hash(password, 8))
-
     if (request.user.user_id !== id && request.user.role !== "admin") {
       throw new AppError("Sem permissão", 401)
     }
@@ -149,13 +147,63 @@ export class UsersController {
       data: {
         name,
         email,
-        password: newPassword,
         availability,
         profileImage,
       },
     })
 
     return response.status(200).json(updatedUser)
+  }
+
+  async updatePassword(request: Request, response: Response) {
+    const bodySchema = z.object({
+      currentPassword: z.string().trim().min(6),
+      newPassword: z.string().trim().min(6),
+    })
+
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    const { currentPassword, newPassword } = bodySchema.parse(request.body)
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!existingUser) {
+      throw new AppError("Usuário não encontrado", 404)
+    }
+
+    if (request.user.user_id !== id) {
+      throw new AppError("Sem permissão")
+    }
+
+    const passwordMatches = await compare(
+      currentPassword,
+      existingUser.password,
+    )
+
+    if (!passwordMatches) {
+      throw new AppError("Senha atual incorreta", 401)
+    }
+
+    const passwordHash = await hash(newPassword, 8)
+
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: passwordHash,
+      },
+    })
+
+    return response.status(200).json()
   }
 
   async index(request: Request, response: Response) {
