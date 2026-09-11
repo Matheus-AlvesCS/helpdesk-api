@@ -95,7 +95,7 @@ export class UsersController {
       name: z.string().trim().min(3).optional(),
       email: z.email().trim().optional(),
       availability: z.string().array().optional(),
-      profileImage: z.string().trim().min(15).optional(),
+      profileImage: z.string().trim().optional(),
     })
 
     const paramsSchema = z.object({
